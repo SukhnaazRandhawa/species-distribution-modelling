@@ -1,0 +1,7 @@
+.venv/
+data/
+results/predictions/
+results/models/
+__pycache__/
+*.pyc
+.DS_Store
