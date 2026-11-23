@@ -8,14 +8,18 @@ Higher score = model thinks the species is more likely present.
 import numpy as np
 
 
-def average_precision_rows(scores, labels):
+def average_precision_rows(scores, labels, seed=0):
     """Average precision for each row of a 2D array.
 
     For each row: rank items by score (highest first), then average the
     precision at the rank of every true positive.
     Rows with no positives get NaN (AP is undefined for them).
+
+    Ties (equal scores) are broken in a fixed random order, so a model
+    cannot gain or lose AP from the order the data happens to be stored in.
     """
-    order = np.argsort(-scores, axis=1, kind='stable')
+    perm = np.random.default_rng(seed).permutation(scores.shape[1])
+    order = perm[np.argsort(-scores[:, perm], axis=1, kind='stable')]
     hits = np.take_along_axis(labels, order, axis=1)          # labels in ranked order
     cum_hits = np.cumsum(hits, axis=1, dtype=np.float32)       # positives found so far
     ranks = np.arange(1, labels.shape[1] + 1, dtype=np.float32)
@@ -70,8 +74,9 @@ def richness_error(probs, Y, mask=None):
         probs, Y = probs[mask], Y[mask]
     pred = probs.sum(axis=1)
     true = Y.sum(axis=1)
-    return dict(mae=float(np.abs(pred - true).mean()),
-                corr=float(np.corrcoef(pred, true)[0, 1]))
+    # Correlation is undefined if the model predicts the same count everywhere.
+    corr = np.nan if np.allclose(pred, pred[0]) else float(np.corrcoef(pred, true)[0, 1])
+    return dict(mae=float(np.abs(pred - true).mean()), corr=corr)
 
 
 def summarise(scores, Y, mask=None, probs=True):
