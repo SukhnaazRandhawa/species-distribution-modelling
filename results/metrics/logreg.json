@@ -1,0 +1,30 @@
+{
+  "logreg_uniform": {
+    "all": {
+      "mean_ap_species": 0.5535875933259884,
+      "mean_ap_location": 0.4904992575925393,
+      "richness_mae": 10.427177470696023,
+      "richness_corr": 0.6645589735162772
+    },
+    "land": {
+      "mean_ap_species": 0.7035794861523359,
+      "mean_ap_location": 0.6344118367921938,
+      "richness_mae": 12.480952005823752,
+      "richness_corr": 0.822945512037332
+    }
+  },
+  "logreg_target_group": {
+    "all": {
+      "mean_ap_species": 0.3191296982668789,
+      "mean_ap_location": 0.357615502235998,
+      "richness_mae": 19.091427410987198,
+      "richness_corr": 0.4914491448409755
+    },
+    "land": {
+      "mean_ap_species": 0.6234807525309247,
+      "mean_ap_location": 0.6074951164916843,
+      "richness_mae": 13.872919862592726,
+      "richness_corr": 0.7335114785307383
+    }
+  }
+}
