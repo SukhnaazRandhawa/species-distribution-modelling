@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "k": 15
+  },
+  "all": {
+    "mean_ap_species": 0.5438390099729349,
+    "mean_ap_location": 0.2739597005975681,
+    "richness_mae": 4.253751292560879,
+    "richness_corr": 0.6781237242794314
+  },
+  "land": {
+    "mean_ap_species": 0.7006358357892241,
+    "mean_ap_location": 0.6002294635697285,
+    "richness_mae": 8.471460354628556,
+    "richness_corr": 0.6877629568368012
+  },
+  "seconds": 478
+}

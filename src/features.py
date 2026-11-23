@@ -22,3 +22,7 @@ def encode_coords(locs, n_freq=4):
     k = np.arange(1, n_freq + 1)[None, :]
     feats = [np.sin(k * lat), np.cos(k * lat), np.sin(k * lon), np.cos(k * lon)]
     return np.concatenate(feats, axis=1).astype(np.float32)
+
+def to_radians(locs):
+    """(lat, lon) in degrees -> radians, as needed by haversine distance."""
+    return np.radians(locs).astype(np.float64)

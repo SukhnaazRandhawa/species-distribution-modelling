@@ -5,6 +5,7 @@ filelock==4.3.0
 fonttools==4.68.0
 fsspec==2026.9.0
 global-land-mask==1.0.0
+imbalanced-learn==0.14.2
 Jinja2==3.1.6
 joblib==1.6.0
 kiwisolver==1.5.1
@@ -22,6 +23,7 @@ python-dateutil==4.0.0
 scikit-learn==1.9.1
 scipy==1.18.1
 setuptools==84.2.1
+sklearn-compat==0.1.6
 sympy==1.14.0
 threadpoolctl==3.8.0
 torch==2.15.0
