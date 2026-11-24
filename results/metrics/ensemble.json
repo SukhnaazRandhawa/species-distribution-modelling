@@ -1,0 +1,140 @@
+{
+  "weights": {
+    "network_extra=False": {
+      "global_weight": 1.0,
+      "group_weights": {
+        "clustered": 0.9,
+        "medium": 0.9,
+        "spread out": 1.0
+      }
+    },
+    "network_extra=True": {
+      "global_weight": 1.0,
+      "group_weights": {
+        "clustered": 1.0,
+        "medium": 0.9,
+        "spread out": 1.0
+      }
+    }
+  },
+  "spread_cuts_km": [
+    302.9275207519531,
+    740.0963338216146
+  ],
+  "test": {
+    "baseline (nearest sighting)": {
+      "all": {
+        "mean_ap_species": 0.725053351095022,
+        "mean_ap_location": 0.23719897266917833
+      },
+      "land": {
+        "mean_ap_species": 0.8230425021895664,
+        "mean_ap_location": 0.5099821929244185
+      }
+    },
+    "network_extra=False": {
+      "all": {
+        "mean_ap_species": 0.789995874387912,
+        "mean_ap_location": 0.33564065100845225
+      },
+      "land": {
+        "mean_ap_species": 0.8140429621401261,
+        "mean_ap_location": 0.49661043886617795
+      }
+    },
+    "network_extra=False + baseline (w=1.0)": {
+      "all": {
+        "mean_ap_species": 0.789995874387912,
+        "mean_ap_location": 0.33564065100845225
+      },
+      "land": {
+        "mean_ap_species": 0.8140429621401261,
+        "mean_ap_location": 0.49661043886617795
+      }
+    },
+    "network_extra=False + baseline (weight by spread)": {
+      "all": {
+        "mean_ap_species": 0.8049466976301917,
+        "mean_ap_location": 0.357267419688278
+      },
+      "land": {
+        "mean_ap_species": 0.8262397472962596,
+        "mean_ap_location": 0.5561273896912357
+      }
+    },
+    "network_extra=True": {
+      "all": {
+        "mean_ap_species": 0.8073753605357886,
+        "mean_ap_location": 0.33578073237342915
+      },
+      "land": {
+        "mean_ap_species": 0.8326523393154541,
+        "mean_ap_location": 0.4947657402087849
+      }
+    },
+    "network_extra=True + baseline (w=1.0)": {
+      "all": {
+        "mean_ap_species": 0.8073753605357886,
+        "mean_ap_location": 0.33578073237342915
+      },
+      "land": {
+        "mean_ap_species": 0.8326523393154541,
+        "mean_ap_location": 0.4947657402087849
+      }
+    },
+    "network_extra=True + baseline (weight by spread)": {
+      "all": {
+        "mean_ap_species": 0.8127624133594806,
+        "mean_ap_location": 0.3419929400768163
+      },
+      "land": {
+        "mean_ap_species": 0.8370859959589475,
+        "mean_ap_location": 0.512329263033672
+      }
+    }
+  },
+  "test_by_spread": [
+    {
+      "model": "baseline (nearest sighting)",
+      "clustered": 0.7239001828881318,
+      "medium": 0.7319785838187546,
+      "spread out": 0.718417453649308
+    },
+    {
+      "model": "network_extra=False",
+      "clustered": 0.7216873046188562,
+      "medium": 0.8172143036820285,
+      "spread out": 0.8245607466742583
+    },
+    {
+      "model": "network_extra=False + baseline (w=1.0)",
+      "clustered": 0.7216873046188562,
+      "medium": 0.8172143036820285,
+      "spread out": 0.8245607466742583
+    },
+    {
+      "model": "network_extra=False + baseline (weight by spread)",
+      "clustered": 0.7510507511854448,
+      "medium": 0.8332806630409221,
+      "spread out": 0.8245607466742583
+    },
+    {
+      "model": "network_extra=True",
+      "clustered": 0.7655899188636696,
+      "medium": 0.8241338323522944,
+      "spread out": 0.8283980696681473
+    },
+    {
+      "model": "network_extra=True + baseline (w=1.0)",
+      "clustered": 0.7655899188636696,
+      "medium": 0.8241338323522944,
+      "spread out": 0.8283980696681473
+    },
+    {
+      "model": "network_extra=True + baseline (weight by spread)",
+      "clustered": 0.7655899188636696,
+      "medium": 0.8389334280217776,
+      "spread out": 0.8283980696681473
+    }
+  ]
+}
