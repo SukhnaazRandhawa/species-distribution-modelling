@@ -58,3 +58,17 @@ def load_all(extra: bool = False):
     return dict(train_locs=train_locs, train_cols=train_cols,
                 test_locs=test_locs, Y_test=Y_test,
                 species=species, names=names)
+    
+    
+def load_extra_species(main_species):
+    """Sightings from the extra file, which contains DIFFERENT species.
+
+    Extra species get columns after the main ones (len(main_species) ...),
+    so columns 0..499 still mean exactly the same species as in Y_test.
+    Returns locs, cols, number of extra species.
+    """
+    locs, ids, extra_species, _ = load_train(extra=True)
+    assert not set(extra_species) & set(main_species), 'expected no shared species'
+    offset = len(main_species)
+    col = {sp: offset + i for i, sp in enumerate(extra_species)}
+    return locs, np.array([col[s] for s in ids]), len(extra_species)

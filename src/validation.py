@@ -66,4 +66,6 @@ def val_ap_vs_background(scores, Y_val, n_val_bg=10000):
         rows = np.concatenate([pos_rows, bg_rows])
         ap[j] = average_precision_rows(scores[rows, j][None, :],
                                        Y_val[rows, j][None, :])[0]
-    return ap
+    return dict(train_locs=train_locs[~is_val], train_cols=train_cols[~is_val],
+                val_locs=val_locs, Y_val=Y_val,
+                val_blocks=np.unique(blocks[is_val]), block_deg=block_deg)
