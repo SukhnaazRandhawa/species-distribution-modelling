@@ -98,7 +98,8 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
                        pos_weight=2048.0, full_loss=True, n_freq=1,
                        width=256, n_blocks=4, dropout=0.3, epochs=10,
                        batch_size=2048, lr=5e-4, seed=0, verbose=True,
-                       featurize=None, bg_pool_size=1_000_000):
+                       featurize=None, bg_pool_size=1_000_000,
+                       return_model=False):
     """Train the shared network and return (n_query, n_species) probabilities.
 
     featurize : optional function locs -> features (e.g. with climate).
@@ -107,6 +108,9 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
                 climate lookups cannot be done on the GPU each batch.
                 If None, coordinates are encoded with n_freq frequencies and
                 fresh random points are generated on the GPU every batch.
+    return_model : if True, also return a function features -> probabilities,
+                   so the trained model can be re-used (e.g. for
+                   permutation importance).
     """
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -145,10 +149,14 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
 
     # Predict in chunks to keep memory low.
     model.eval()
-    Xq = featurize_np(query_locs)
-    out = np.zeros((len(Xq), n_species), dtype=np.float32)
-    with torch.no_grad():
-        for start in range(0, len(Xq), 20000):
-            xb = torch.tensor(Xq[start:start + 20000], device=device)
-            out[start:start + 20000] = torch.sigmoid(model(xb)).cpu().numpy()
-    return out
+
+    def predict_features(Xq):
+        out = np.zeros((len(Xq), n_species), dtype=np.float32)
+        with torch.no_grad():
+            for start in range(0, len(Xq), 20000):
+                xb = torch.tensor(Xq[start:start + 20000], device=device)
+                out[start:start + 20000] = torch.sigmoid(model(xb)).cpu().numpy()
+        return out
+
+    out = predict_features(featurize_np(query_locs))
+    return (out, predict_features) if return_model else out
