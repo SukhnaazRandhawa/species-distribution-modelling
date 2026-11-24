@@ -87,9 +87,12 @@ for r, (row_title, j) in enumerate(rows.items()):
             sc = np.asarray(preds[m][:, j])
             ap = per_species_ap(np.asarray(preds[m][:, j:j + 1]), Y[:, j:j + 1])[0]
             s = sc[inside]
-            order = np.argsort(s)
-            ax.scatter(sub[order, 1], sub[order, 0], s=7, c=s[order], cmap='Blues',
+            show = s > 0.05 * max(s.max(), 1e-6)      # hide near-zero scores so land shows
+            order = np.argsort(s[show])
+            pts, vals = sub[show][order], s[show][order]
+            ax.scatter(pts[:, 1], pts[:, 0], s=7, c=vals, cmap='Blues',
                        vmin=0, vmax=max(s.max(), 1e-6), marker='s', lw=0, zorder=2)
+            
             ax.text(0.02, 0.03, f'AP {ap:.2f}', transform=ax.transAxes, fontsize=8,
                     color=INK, zorder=4,
                     bbox=dict(facecolor=SURFACE, edgecolor='none', pad=1.5, alpha=0.9))
