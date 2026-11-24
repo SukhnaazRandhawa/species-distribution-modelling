@@ -209,7 +209,7 @@ if hab_file.exists():
         color, lab = (BLUE, 'Temperature') if i <= 11 else (ORANGE, 'Precipitation')
         ax.barh(yi, v, 0.7, color=color, zorder=3,
                 label=lab if lab not in ax.get_legend_handles_labels()[1] else None)
-        ax.text(v + imp.max() * 0.01, yi, f'{v:.2f}', va='center', fontsize=6.5, color=INK)
+        ax.text(v + imp.max() * 0.01, yi, f'{v:.3f}', va='center', fontsize=6.5, color=INK)
     ax.set_yticks(yy, [f'BIO{int(k[3:])}: {BIO[int(k[3:])]}' for k in imp.index], fontsize=7)
     ax.set_xlabel('Mean drop in species AP when shuffled (land)', fontsize=8, color=INK)
     ax.legend(frameon=False, fontsize=7, loc='upper center',
