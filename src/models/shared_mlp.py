@@ -12,7 +12,7 @@ import torch.nn.functional as F
 from src.features import encode_coords
 
 
-# ---------------------------------------------------------------- model
+#  model
 class ResidualBlock(nn.Module):
     """Two linear layers with a skip connection: out = x + f(x)."""
 
@@ -40,7 +40,7 @@ class SharedMLP(nn.Module):
         return self.classifier(self.encoder(x))         # logits, not probabilities
 
 
-# ----------------------------------------------------------------- loss
+#  loss
 def assume_negative_loss(logits_obs, species, logits_rand, pos_weight, full=True):
     """Presence-only loss.
 
@@ -69,7 +69,7 @@ def assume_negative_loss(logits_obs, species, logits_rand, pos_weight, full=True
     return (loss / S).mean()
 
 
-# --------------------------------------------------------- train/predict
+#  train/predict
 def pick_device():
     if torch.backends.mps.is_available():           # Apple Silicon GPU
         return torch.device('mps')
@@ -158,5 +158,6 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
                 out[start:start + 20000] = torch.sigmoid(model(xb)).cpu().numpy()
         return out
 
+    predict_features.model = model          # access to the trained network
     out = predict_features(featurize_np(query_locs))
     return (out, predict_features) if return_model else out
