@@ -44,8 +44,10 @@ def make_validation_split(train_locs, train_cols, n_species, block_deg=5.0,
     Y_val[np.arange(len(val_pos_cols)), val_pos_cols] = True
 
     return dict(train_locs=train_locs[~is_val], train_cols=train_cols[~is_val],
-                val_locs=val_locs, Y_val=Y_val)
-    
+                val_locs=val_locs, Y_val=Y_val,
+                val_blocks=np.unique(blocks[is_val]), block_deg=block_deg)
+
+
 def val_ap_vs_background(scores, Y_val, n_val_bg=10000):
     """Per-species validation AP using ONLY random background as negatives.
 
@@ -66,6 +68,4 @@ def val_ap_vs_background(scores, Y_val, n_val_bg=10000):
         rows = np.concatenate([pos_rows, bg_rows])
         ap[j] = average_precision_rows(scores[rows, j][None, :],
                                        Y_val[rows, j][None, :])[0]
-    return dict(train_locs=train_locs[~is_val], train_cols=train_cols[~is_val],
-                val_locs=val_locs, Y_val=Y_val,
-                val_blocks=np.unique(blocks[is_val]), block_deg=block_deg)
+    return ap

@@ -1,0 +1,40 @@
+{
+  "without_extra_species": {
+    "settings": {
+      "use_extra": false,
+      "pos_weight": 64.0,
+      "epochs": 30
+    },
+    "all": {
+      "mean_ap_species": 0.789995874387912,
+      "mean_ap_location": 0.8273376892762898,
+      "richness_mae": 3.7023453024111617,
+      "richness_corr": 0.8927810305010541
+    },
+    "land": {
+      "mean_ap_species": 0.8140429621401261,
+      "mean_ap_location": 0.7483515335298756,
+      "richness_mae": 8.321406320837584,
+      "richness_corr": 0.8277597380585513
+    }
+  },
+  "with_extra_species": {
+    "settings": {
+      "use_extra": true,
+      "pos_weight": 64.0,
+      "epochs": 30
+    },
+    "all": {
+      "mean_ap_species": 0.8073753605357886,
+      "mean_ap_location": 0.8065540891205909,
+      "richness_mae": 5.161827149732881,
+      "richness_corr": 0.8031545926889205
+    },
+    "land": {
+      "mean_ap_species": 0.8326523393154541,
+      "mean_ap_location": 0.7640142317144092,
+      "richness_mae": 13.277362241129191,
+      "richness_corr": 0.683395992802321
+    }
+  }
+}
