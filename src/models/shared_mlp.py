@@ -97,13 +97,32 @@ def encode_torch(locs, n_freq):
 def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
                        pos_weight=2048.0, full_loss=True, n_freq=1,
                        width=256, n_blocks=4, dropout=0.3, epochs=10,
-                       batch_size=2048, lr=5e-4, seed=0, verbose=True):
-    """Train the shared network and return (n_query, n_species) probabilities."""
+                       batch_size=2048, lr=5e-4, seed=0, verbose=True,
+                       featurize=None, bg_pool_size=1_000_000):
+    """Train the shared network and return (n_query, n_species) probabilities.
+
+    featurize : optional function locs -> features (e.g. with climate).
+                If given, random background locations are drawn from a
+                pre-computed pool of bg_pool_size uniform points, because
+                climate lookups cannot be done on the GPU each batch.
+                If None, coordinates are encoded with n_freq frequencies and
+                fresh random points are generated on the GPU every batch.
+    """
     torch.manual_seed(seed)
     np.random.seed(seed)
     device = pick_device()
 
-    X = torch.tensor(encode_coords(train_locs, n_freq), device=device)
+    if featurize is None:
+        featurize_np = lambda locs: encode_coords(locs, n_freq)
+        sample_bg = lambda n: encode_torch(random_locations(n, device), n_freq)
+    else:
+        from src.pseudo_absences import uniform_sphere
+        featurize_np = featurize
+        pool = torch.tensor(featurize(uniform_sphere(
+            bg_pool_size, np.random.default_rng(seed))), device=device)
+        sample_bg = lambda n: pool[torch.randint(len(pool), (n,), device=device)]
+
+    X = torch.tensor(featurize_np(train_locs), device=device)
     y = torch.tensor(train_cols, dtype=torch.long, device=device)
     model = SharedMLP(X.shape[1], n_species, width, n_blocks, dropout).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=lr)
@@ -114,7 +133,7 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
         total = 0.0
         for start in range(0, len(X), batch_size):
             idx = perm[start:start + batch_size]
-            x_rand = encode_torch(random_locations(len(idx), device), n_freq)
+            x_rand = sample_bg(len(idx))
             loss = assume_negative_loss(model(X[idx]), y[idx], model(x_rand),
                                         pos_weight, full=full_loss)
             opt.zero_grad()
@@ -126,7 +145,7 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
 
     # Predict in chunks to keep memory low.
     model.eval()
-    Xq = encode_coords(query_locs, n_freq)
+    Xq = featurize_np(query_locs)
     out = np.zeros((len(Xq), n_species), dtype=np.float32)
     with torch.no_grad():
         for start in range(0, len(Xq), 20000):
