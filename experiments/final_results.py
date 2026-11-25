@@ -54,7 +54,7 @@ names = {'location': 'Location', 'climate': 'Climate', 'both': 'Location + clima
 for model, label in [('network', 'Shared network'), ('forest', 'Random forest')]:
     for inp, nice in names.items():
         rows.append(row(f'Inputs experiment: {label}', nice, load(f'climate_{model}_{inp}_tuned')))
-        
+
 # Extra species: mean ± std over 3 seeds
 seeds = pd.read_csv(M / 'extra_species_seeds.csv')
 for use_extra, nice in [(False, 'Location + land flag'), (True, '+ 1,918 extra species')]:
@@ -73,8 +73,7 @@ for key, nice in [('network_extra=False + baseline (weight by spread)',
                   ('network_extra=True + baseline (weight by spread)',
                    'Network (extra species) + baseline (by spread)')]:
     rows.append(row('Ensembles', nice, ens[key]))
-    rows[-1]['location_ap'] = np.nan     # rank-normalised scores aren't comparable across species
-    
+
 table = pd.DataFrame(rows)
 table.to_csv(M / 'final_results.csv', index=False)
 
@@ -182,7 +181,7 @@ ax.set_xlim(0, 1)
 ax.set_xlabel('Mean species AP (test)', fontsize=8, color=INK)
 ax.legend(frameon=False, fontsize=7, loc='upper center',
           bbox_to_anchor=(0.5, -0.17), ncol=2)
-style(ax, 'Model comparison (Q1)')
+style(ax, 'Model comparison')
 fig.tight_layout()
 fig.savefig(F / 'main_results.png', facecolor=SURFACE)
 plt.close(fig)

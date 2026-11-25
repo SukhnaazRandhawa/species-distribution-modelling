@@ -1,0 +1,19 @@
+{
+  "settings": {
+    "inputs": "location",
+    "pos_weight": 128.0
+  },
+  "all": {
+    "mean_ap_species": 0.7867668700812012,
+    "mean_ap_location": 0.23695410387718854,
+    "richness_mae": 3.8833245903179403,
+    "richness_corr": 0.8545609616639382
+  },
+  "land": {
+    "mean_ap_species": 0.8037012887847225,
+    "mean_ap_location": 0.7483205648734723,
+    "richness_mae": 8.615101943843586,
+    "richness_corr": 0.7592476271294657
+  },
+  "seconds": 67
+}

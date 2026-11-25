@@ -12,7 +12,7 @@ import torch.nn.functional as F
 from src.features import encode_coords
 
 
-#  model
+# ---------------------------------------------------------------- model
 class ResidualBlock(nn.Module):
     """Two linear layers with a skip connection: out = x + f(x)."""
 
@@ -40,7 +40,7 @@ class SharedMLP(nn.Module):
         return self.classifier(self.encoder(x))         # logits, not probabilities
 
 
-#  loss
+# ----------------------------------------------------------------- loss
 def assume_negative_loss(logits_obs, species, logits_rand, pos_weight, full=True):
     """Presence-only loss.
 
@@ -69,7 +69,7 @@ def assume_negative_loss(logits_obs, species, logits_rand, pos_weight, full=True
     return (loss / S).mean()
 
 
-#  train/predict
+# --------------------------------------------------------- train/predict
 def pick_device():
     if torch.backends.mps.is_available():           # Apple Silicon GPU
         return torch.device('mps')
@@ -99,7 +99,7 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
                        width=256, n_blocks=4, dropout=0.3, epochs=10,
                        batch_size=2048, lr=5e-4, seed=0, verbose=True,
                        featurize=None, bg_pool_size=1_000_000,
-                       return_model=False):
+                       bg_land_only=False, return_model=False):
     """Train the shared network and return (n_query, n_species) probabilities.
 
     featurize : optional function locs -> features (e.g. with climate).
@@ -108,6 +108,11 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
                 climate lookups cannot be done on the GPU each batch.
                 If None, coordinates are encoded with n_freq frequencies and
                 fresh random points are generated on the GPU every batch.
+    bg_land_only : if True, random background points are drawn from land
+                   only (where WorldClim has data), as in Tej's per-species
+                   models. The model then learns to separate land habitats
+                   but learns nothing about the ocean, so callers should set
+                   ocean predictions to 0 themselves.
     return_model : if True, also return a function features -> probabilities,
                    so the trained model can be re-used (e.g. for
                    permutation importance).
@@ -116,14 +121,19 @@ def fit_predict_shared(train_locs, train_cols, query_locs, n_species,
     np.random.seed(seed)
     device = pick_device()
 
-    if featurize is None:
-        featurize_np = lambda locs: encode_coords(locs, n_freq)
+    featurize_np = featurize or (lambda locs: encode_coords(locs, n_freq))
+    if featurize is None and not bg_land_only:
         sample_bg = lambda n: encode_torch(random_locations(n, device), n_freq)
     else:
         from src.pseudo_absences import uniform_sphere
-        featurize_np = featurize
-        pool = torch.tensor(featurize(uniform_sphere(
-            bg_pool_size, np.random.default_rng(seed))), device=device)
+        rng = np.random.default_rng(seed)
+        if bg_land_only:
+            from src.features import land_mask
+            pts = uniform_sphere(4 * bg_pool_size, rng)    # ~29% fall on land
+            pts = pts[land_mask(pts)][:bg_pool_size]
+        else:
+            pts = uniform_sphere(bg_pool_size, rng)
+        pool = torch.tensor(featurize_np(pts), device=device)
         sample_bg = lambda n: pool[torch.randint(len(pool), (n,), device=device)]
 
     X = torch.tensor(featurize_np(train_locs), device=device)

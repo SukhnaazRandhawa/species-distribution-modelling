@@ -58,8 +58,8 @@
         "mean_ap_location": 0.357267419688278
       },
       "land": {
-        "mean_ap_species": 0.8262397472962596,
-        "mean_ap_location": 0.5561273896912357
+        "mean_ap_species": 0.8160568757234189,
+        "mean_ap_location": 0.5519450481253254
       }
     },
     "network_extra=True": {
@@ -88,8 +88,8 @@
         "mean_ap_location": 0.3419929400768163
       },
       "land": {
-        "mean_ap_species": 0.8370859959589475,
-        "mean_ap_location": 0.512329263033672
+        "mean_ap_species": 0.8265981188703933,
+        "mean_ap_location": 0.5090926486646764
       }
     }
   },
@@ -136,5 +136,6 @@
       "medium": 0.8389334280217776,
       "spread out": 0.8283980696681473
     }
-  ]
+  ],
+  "land_mask": "WorldClim (85661 test locations)"
 }

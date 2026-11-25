@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "full_loss": false,
+    "pos_weight": 256.0,
+    "n_freq": 4,
+    "epochs": 10
+  },
+  "all": {
+    "mean_ap_species": 0.6583147692527339,
+    "mean_ap_location": 0.6466624189195774,
+    "richness_mae": 3.9674359225410063,
+    "richness_corr": 0.8150775542016141
+  },
+  "land": {
+    "mean_ap_species": 0.7636792990374616,
+    "mean_ap_location": 0.7332818757044384,
+    "richness_mae": 5.93688876459134,
+    "richness_corr": 0.842237506726172
+  },
+  "seconds": 42
+}

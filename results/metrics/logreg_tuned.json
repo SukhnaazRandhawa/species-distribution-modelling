@@ -10,9 +10,10 @@
     "richness_corr": 0.7028774995822603
   },
   "land": {
-    "mean_ap_species": 0.7104563715718281,
-    "mean_ap_location": 0.6576590290133613,
-    "richness_mae": 9.52096460693768,
-    "richness_corr": 0.8456631105701998
-  }
+    "mean_ap_species": 0.7046967748068205,
+    "mean_ap_location": 0.6535228636193569,
+    "richness_mae": 9.464915137706287,
+    "richness_corr": 0.843009787275342
+  },
+  "land_mask": "WorldClim (85661 test locations)"
 }

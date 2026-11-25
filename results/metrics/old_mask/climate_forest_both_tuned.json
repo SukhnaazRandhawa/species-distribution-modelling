@@ -1,0 +1,19 @@
+{
+  "settings": {
+    "inputs": "both",
+    "min_samples_leaf": 1
+  },
+  "all": {
+    "mean_ap_species": 0.755132227775883,
+    "mean_ap_location": 0.603905383047745,
+    "richness_mae": 7.470338106689664,
+    "richness_corr": 0.8464562229208706
+  },
+  "land": {
+    "mean_ap_species": 0.7750524329722867,
+    "mean_ap_location": 0.6386316058447257,
+    "richness_mae": 20.553021056644795,
+    "richness_corr": 0.7597661587990346
+  },
+  "seconds": 106
+}

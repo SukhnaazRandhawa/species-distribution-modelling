@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "n_freq": 4,
+    "C": 10.0
+  },
+  "all": {
+    "mean_ap_species": 0.5658883833176628,
+    "mean_ap_location": 0.5116685979681733,
+    "richness_mae": 8.19204924243981,
+    "richness_corr": 0.7028774995822603
+  },
+  "land": {
+    "mean_ap_species": 0.7104563715718281,
+    "mean_ap_location": 0.6576590290133613,
+    "richness_mae": 9.52096460693768,
+    "richness_corr": 0.8456631105701998
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "frequency": {
+    "all": {
+      "mean_ap_species": 0.011894449957196563,
+      "mean_ap_location": 0.037670928022915974,
+      "richness_mae": 5.165457688062696,
+      "richness_corr": NaN
+    },
+    "land": {
+      "mean_ap_species": 0.03165991193147876,
+      "mean_ap_location": 0.09632035804400563,
+      "richness_mae": 14.992180054250873,
+      "richness_corr": NaN
+    }
+  },
+  "nearest_sighting": {
+    "all": {
+      "mean_ap_species": 0.725053351095022,
+      "mean_ap_location": 0.6250187785377938,
+      "richness_mae": 4.758029113977318,
+      "richness_corr": 0.7487513071260349
+    },
+    "land": {
+      "mean_ap_species": 0.8230425021895664,
+      "mean_ap_location": 0.7565946734289556,
+      "richness_mae": 5.042514478168461,
+      "richness_corr": 0.85509882166345
+    }
+  }
+}

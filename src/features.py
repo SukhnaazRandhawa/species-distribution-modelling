@@ -2,10 +2,22 @@
 import numpy as np
 
 
-def land_mask(locs):
-    """True where a (lat, lon) location is on land."""
-    from global_land_mask import globe
-    return globe.is_land(locs[:, 0], locs[:, 1])
+_LAND_GRID = None
+
+
+def land_mask(locs, file='data/climate_10m.npz'):
+    """True where a (lat, lon) location is on land.
+
+    Land = WorldClim has data for all 19 variables at that location. This is
+    the group's shared definition of land, and the same rule as the land flag
+    the models use (ClimateGrid.features), so models are scored on the same
+    land they were given. (Earlier versions used the global_land_mask package.)
+    """
+    global _LAND_GRID
+    from src.climate import ClimateGrid
+    if _LAND_GRID is None:                       # load the climate file once
+        _LAND_GRID = ClimateGrid(file)
+    return ~np.isnan(_LAND_GRID.raw(locs)).any(axis=1)
 
 
 def encode_coords(locs, n_freq=4):
@@ -22,6 +34,7 @@ def encode_coords(locs, n_freq=4):
     k = np.arange(1, n_freq + 1)[None, :]
     feats = [np.sin(k * lat), np.cos(k * lat), np.sin(k * lon), np.cos(k * lon)]
     return np.concatenate(feats, axis=1).astype(np.float32)
+
 
 def to_radians(locs):
     """(lat, lon) in degrees -> radians, as needed by haversine distance."""
